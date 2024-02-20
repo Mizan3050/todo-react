@@ -2,8 +2,18 @@ import "./styles.css";
 import { useState } from "react";
 import { NewTodoForm } from "./NewTodoForm";
 import { TodoList } from "./TodoList";
+import { useEffect } from "react";
+import { Alert } from "./Alert";
+
 export default function App() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState(() => {
+    const localValue = localStorage.getItem("ITEMS");
+    return localValue == null ? [] : JSON.parse(localValue);
+  });
+
+  useEffect(() => {
+    localStorage.setItem("ITEMS", JSON.stringify(todos));
+  }, [todos]);
 
   function addATodo(title) {
     setTodos((currentTodos) => [
@@ -34,6 +44,8 @@ export default function App() {
 
   return (
     <>
+      <></>
+      <Alert>Alert LOL</Alert>
       <NewTodoForm addATodo={addATodo} />
       <div className="header">Todo List</div>
       <TodoList
